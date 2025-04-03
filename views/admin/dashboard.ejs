@@ -1,0 +1,156 @@
+<div class="container py-5">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Products</h5>
+                        <a href="/admin/products/add" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add New Product
+                        </a>
+                    </div>
+                    
+                    <% if (products && products.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Featured</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% products.forEach(product => { %>
+                                        <tr>
+                                            <td>
+                                                <img src="<%= product.imageUrl %>" alt="<%= product.name %>" width="50" height="50" class="rounded">
+                                            </td>
+                                            <td><%= product.name %></td>
+                                            <td><%= product.category %></td>
+                                            <td>$<%= product.price.toFixed(2) %></td>
+                                            <td>
+                                                <span class="badge <%= product.inStock ? 'bg-success' : 'bg-danger' %>">
+                                                    <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge <%= product.featured ? 'bg-primary' : 'bg-secondary' %>">
+                                                    <%= product.featured ? 'Featured' : 'Not Featured' %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="/admin/products/edit/<%= product._id %>" class="btn btn-primary">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <form action="/admin/products/<%= product._id %>?_method=DELETE" method="POST" class="d-inline">
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="alert alert-info">
+                            <p class="mb-0">No products found. Click the "Add New Product" button to add your first product.</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Stats</h5>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="mb-1">Total Products</h6>
+                                <h3 class="mb-0"><%= products ? products.length : 0 %></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="mb-1">Featured Products</h6>
+                                <h3 class="mb-0"><%= products ? products.filter(p => p.featured).length : 0 %></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="mb-1">Out of Stock</h6>
+                                <h3 class="mb-0"><%= products ? products.filter(p => !p.inStock).length : 0 %></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="mb-1">Categories</h6>
+                                <h3 class="mb-0"><%= products ? new Set(products.map(p => p.category)).size : 0 %></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Admin Actions</h5>
+                    <div class="list-group mt-3">
+                        <a href="/admin/products/add" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Add New Product</h6>
+                                    <small class="text-muted">Create a new product listing</small>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Manage Categories</h6>
+                                    <small class="text-muted">Add, edit, or remove product categories</small>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">View Orders</h6>
+                                    <small class="text-muted">Manage customer orders</small>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Site Settings</h6>
+                                    <small class="text-muted">Configure website settings</small>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
