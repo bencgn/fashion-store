@@ -26,7 +26,7 @@ A Node.js web application for an online clothing shop with product catalog, shop
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/fashion-store.git
+   git clone https://github.com/bencgn/fashion-store
    cd fashion-store
    ```
 
